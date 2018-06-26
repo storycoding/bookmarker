@@ -27,6 +27,8 @@ const store = {
 			// thank you message
 			// link submitted
 			// link back to home page
+
+		this.renderList()
 	},
 
 	addURL: function(url) {
@@ -56,33 +58,53 @@ const store = {
 			// re-render components that have been changed
 	},
 
-	renderList : function() {
-		while ( list.firstChild ) {
-			list.removeChild(list.firstChild)
-		}
+	createItem: function(id, pages, url) {
 
-		const newList = this.state.pages[this.state.selected]
+		let item = document.createElement('ul')
 
-		for(let i = 0; i < newList.length; i++) {
-			let item = document.createElement('ul')
 			let link = document.createElement('a')
-
-			let del = document.createElement('button')
-			del.innerHTML = ('delete')
-			del.addEventListener('click', () => console.log(del) )
+			link.href = url
+			link.innerHTML = url
 
 			let edit = document.createElement('button')
 			edit.innerHTML = ('edit')
 			edit.addEventListener('click', () => console.log(edit) )
 
-			link.href = newList[i]
-			link.innerHTML = newList[i]
+			let del = document.createElement('button')
+			del.id = id
+			del.innerHTML = ('delete')
 
-			item.appendChild(link)
-			item.appendChild(edit)
-			item.appendChild(del)
+			
+			del.addEventListener('click', () => {
+				// this is store
+				console.log('pages: ', pages)
+				pages.splice(del.id, 1 ) // replace this with immutable equivalent
 
-			list.appendChild(item)
+				// hacky equivalent
+				this.setState(pages) // to trigger the storage save and render
+			})
+
+		item.appendChild(link)
+		item.appendChild(edit)
+		item.appendChild(del)
+
+		// find parent and append
+		list.appendChild(item)
+	},
+
+	renderList : function() {
+		while ( list.firstChild ) {
+			list.removeChild(list.firstChild)
+		}
+
+		// for short
+		const selected = this.state.selected - 0
+		const pages = this.state.pages[selected]
+		
+
+		for(let i = 0; i < pages.length; i++) {
+			const url = pages[i]
+			this.createItem(i, pages, url)
 		}
 	}
 
@@ -94,7 +116,8 @@ submit.addEventListener('click', () => { store.addURL(formInput.value)})
 prev.addEventListener('click', () => console.log('prev'))
 next.addEventListener('click', () => console.log('next'))
 
-store.renderList();
+// triggering the first render
+store.renderList()
 
 // minify app with google closure compiler
 // advanced optimizations
