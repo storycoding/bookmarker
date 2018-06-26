@@ -57,7 +57,7 @@ const store = {
 		content.innerHTML = 'Thank you for submitting your bookmark'
 
 		const close = document.createElement('button')
-		close.innerHTML = 'x'
+		close.innerHTML = 'close window'
 		close.addEventListener('click', () => {
 			thankYou.parentNode.removeChild(thankYou);
 		})
