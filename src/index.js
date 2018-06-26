@@ -9,7 +9,6 @@ const prev = document.getElementById('prev')
 const next = document.getElementById('next')
 
 // on load look for state on localstorage, otherwise create an empty one
-
 const store = {
 	state : JSON.parse(localStorage.getItem('bm_store')) || {
 		count: 1,
@@ -23,16 +22,13 @@ const store = {
 		//didUpdate
 		this.state = Object.assign( {}, this.state, newState )
 		localStorage.setItem('bm_store', JSON.stringify(this.state));
-		// display:
-			// thank you message
-			// link submitted
-			// link back to home page
-
 		this.renderList()
 	},
 
 	addURL: function(url) {
+		if(!url.length) { return }
 		// test if url is valid
+
 		let last = this.state.pages[this.state.count].slice() || []
 
 		if(last.length < 20) {
@@ -51,6 +47,25 @@ const store = {
 		// change location of this call to didUpdate
 		this.renderList(this.state.pages[this.state.selected])
 		console.log(store)
+
+		// create thank you message
+
+		const thankYou = document.createElement('div')
+		thankYou.classList.add('thankYou')
+
+		const content = document.createElement('div')
+		content.innerHTML = 'Thank you for submitting your bookmark'
+
+		const close = document.createElement('button')
+		close.innerHTML = 'x'
+		close.addEventListener('click', () => {
+			thankYou.parentNode.removeChild(thankYou);
+		})
+
+		thankYou.appendChild(content)
+		thankYou.appendChild(close)
+
+		document.body.appendChild(thankYou)
 	},
 
 	didUpdate: function(newState) {
