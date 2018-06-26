@@ -21,7 +21,7 @@ const store = {
 	setState: function(newState) {
 		//didUpdate
 		this.state = Object.assign( {}, this.state, newState )
-		localStorage.setItem('bm_store', JSON.stringify(this.state));
+		localStorage.setItem('bm_store', JSON.stringify(this.state))
 		this.renderList()
 	},
 
@@ -44,11 +44,9 @@ const store = {
 		pages[count] = last
 		this.setState({ count: count, pages : pages })
 		
-		// change location of this call to didUpdate
+		// move this function call to didUpdate
 		this.renderList(this.state.pages[this.state.selected])
-		console.log(store)
 
-		// create thank you message
 
 		const thankYou = document.createElement('div')
 		thankYou.classList.add('thankYou')
@@ -59,7 +57,7 @@ const store = {
 		const close = document.createElement('button')
 		close.innerHTML = 'close window'
 		close.addEventListener('click', () => {
-			thankYou.parentNode.removeChild(thankYou);
+			thankYou.parentNode.removeChild(thankYou)
 		})
 
 		thankYou.appendChild(content)
@@ -92,10 +90,8 @@ const store = {
 			
 			del.addEventListener('click', () => {
 				// this is store
-				console.log('pages: ', pages)
 				pages.splice(del.id, 1 ) // replace this with immutable equivalent
 
-				// hacky equivalent
 				this.setState(pages) // to trigger the storage save and render
 			})
 
